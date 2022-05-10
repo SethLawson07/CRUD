@@ -41,14 +41,17 @@
   <form action="/ajouter" method="post">
     <img class="mb-4" src="/brand/bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Ajouter un article</h1>
-    <input type="hidden" name="id" id="id">
     <div class="form-floating">
-      <input type="text" class="form-control" id="titre" name="titre" placeholder="name@example.com">
+    <!-- <input type="hidden" name="id" id="id">--> 
+    </div>
+    
+    <div class="form-floating">
+      <input type="text" class="form-control" id="titre" name="titre"  required placeholder="name@example.com">
       <label for="floatingInput">Titre </label>
     </div>
     <div class="form-floating">
       <label for="exampleFormControlTextarea1"></label>
-      <textarea class="form-control" id="description" name="description" placeholder="Description" rows="2"></textarea>
+      <textarea class="form-control" id="description" name="description" required placeholder="Description" rows="1"></textarea>
     </div>
     
 

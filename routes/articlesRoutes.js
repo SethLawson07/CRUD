@@ -3,10 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 
-//GET ARTICLE
+//AFFICHER ARTICLE
 router.get("/", (req, res) => {
-    let numero = 0;
-    numero+=1;
+    let numero = 1;
+    
       req.getConnection((erreur, connection) => {
         if (erreur) {
           console.log(erreur);
@@ -33,38 +33,35 @@ router.get("/", (req, res) => {
 
   //PAGE MODIFIER
   router.get("/update/:id",(req,res) => {
+    let nom="seth"
     req.getConnection((erreur, connection) => {
         if (erreur) {
           console.log(erreur);
           res.status(500).render("erreur", { erreur });
         } else {
-          connection.query("SELECT * FROM article ", [], (erreur, resultat) => {
+          connection.query("SELECT * FROM article where id_article = ?", [req.params.id], (erreur, resultat) => {
             if (erreur) {
               console.log(erreur);
               
               res.status(500).render("erreur", { erreur });
             } else {
-              res.status(200).render("update", { resultat,numero });
+              res.status(200).render("update", { resultat,nom });
+              //console.log(resultat);
             }
           });
         }
       });
    
   }); 
+
    //AJOUTER UN ARTCILE 
-  
   router.post("/ajouter", (req, res) => {
-      let id = req.body.id === "" ? null : req.body.id;
       let titre = req.body.titre;
       let description = req.body.description;
     
-      let reqSql =
-        id === null
-        ?   "INSERT INTO article(titre, description) VALUES(?, ?)"
-          : "UPDATE article SET titre = ?, description = ? WHERE id_article = ?";
-    
-      let donnees =
-        id === null ? [null, titre, description] : [titre, description, id];
+      let reqSql = "INSERT INTO article(titre, description) VALUES(?, ?)"
+         
+      let donnees = [titre, description]
     
       req.getConnection((erreur, connection) => {
         if (erreur) {
@@ -82,6 +79,36 @@ router.get("/", (req, res) => {
         }
       });
     });
+
+
+    //MODIFIER UN ARTICLE
+
+    router.post("/modifier", (req, res) => {
+      let id_article = req.body.id
+      let titre = req.body.titre;
+      let description = req.body.description;
+    
+      let reqSql = "UPDATE article SET titre = ?, description = ? WHERE id_article = ?"
+         
+      let donnees = [titre, description, id_article]
+    
+      req.getConnection((erreur, connection) => {
+        if (erreur) {
+          console.log(erreur);
+          res.status(500).render("erreur", { erreur });
+        } else {
+          connection.query(reqSql, donnees, (erreur, resultat) => {
+            if (erreur) {
+              console.log(erreur);
+              res.status(500).render("erreur", { erreur });
+            } else {
+              res.status(300).redirect("/");
+            }
+          });
+        }
+      });
+    });
+  
   
     //SUPRIMER UN ARTICLE
     router.delete("/article/:id", (req, res) => {

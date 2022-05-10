@@ -161,7 +161,7 @@
             <% for( let i = 0; i < resultat.length; i++ ) { %>
             <tr>
              
-                <td><%= numero %> </td>
+                <td><%= numero++ %> </td>
                 <td><%= resultat[i].titre %> </td>
                 <td><%= resultat[i].description %> </td>
                 <td><a href="/update/<%= resultat[i].id_article %> "><button class="w-100 btn btn-lg btn-outline-success" type="submit">Modifier</button></a></td>
